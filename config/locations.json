@@ -57,7 +57,7 @@
       "question": "What Level is this in?",
       "image": "images/locations/question-10.png",
       "answers": ["Dream mall", "Level-558", "Level-124", "Level-37", "Hub", "Level-588"],
-      "correctAnswer": "Level-558"
+      "correctAnswer": "Level-588"
     },
     {
       "question": "Where is this door located?",
