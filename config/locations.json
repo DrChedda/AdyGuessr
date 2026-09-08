@@ -1,0 +1,8 @@
+[
+  {
+    "question": "Where was this picture taken?",
+    "image": "images/locations/Screenshot_1.png",
+    "answers": ["A random place in Level-0", "Infinitelands Staircase", "A removed landmark", "Level-0.35"],
+    "correctAnswer": "Infinitelands Staircase"
+  }
+]

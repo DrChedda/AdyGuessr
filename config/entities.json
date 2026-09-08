@@ -1,0 +1,20 @@
+[
+  {
+    "question": "Which entity is associated with this scene?",
+    "image": "images/entities/the-watcher.jpg",
+    "answers": ["The Watcher", "The Wanderer", "The Mimic", "The Archivist"],
+    "correctAnswer": "The Watcher"
+  },
+  {
+    "question": "What is hiding in this location?",
+    "image": "images/entities/the-mimic.jpg",
+    "answers": ["The Archivist", "The Mimic", "The Watcher", "The Wanderer"],
+    "correctAnswer": "The Mimic"
+  },
+  {
+    "question": "Which entity would you expect to find here?",
+    "image": "images/entities/the-archivist.jpg",
+    "answers": ["The Wanderer", "The Watcher", "The Archivist", "The Mimic"],
+    "correctAnswer": "The Archivist"
+  }
+]
