@@ -32,7 +32,7 @@ function getQuestionLimit() {
 
 function validateLocations(locations) {
   if (!Array.isArray(locations) || locations.length === 0) throw new Error("Location config is empty");
-  if (!locations.every((location) => location && typeof location.question === "string" && Array.isArray(location.answers) && location.answers.length > 0 && typeof location.correctAnswer === "string" && location.answers.includes(location.correctAnswer))) {
+  if (!locations.every((location) => location && typeof location.id === "string" && typeof location.question === "string" && Array.isArray(location.answers) && location.answers.length > 0 && typeof location.correctAnswer === "string" && location.answers.includes(location.correctAnswer))) {
     throw new Error("Location config has an invalid entry");
   }
   return locations;
@@ -80,7 +80,12 @@ function renderRound() {
     button.className = "answer-button";
     button.type = "button";
     button.dataset.answer = choice;
-    button.innerHTML = `<span class="answer-letter">${String.fromCharCode(65 + index)}</span><span>${choice}</span>`;
+    const letter = document.createElement("span");
+    letter.className = "answer-letter";
+    letter.textContent = String.fromCharCode(65 + index);
+    const label = document.createElement("span");
+    label.textContent = choice;
+    button.append(letter, label);
     button.addEventListener("click", () => selectAnswer(button, location));
     elements.answerList.appendChild(button);
   });
@@ -93,7 +98,7 @@ function selectAnswer(button, location) {
   const isCorrect = button.dataset.answer === location.correctAnswer;
   const points = isCorrect ? 10 : -5;
   state.score += points;
-  state.answers.push({ question: location.question, correctAnswer: location.correctAnswer, isCorrect, points });
+  state.answers.push({ questionId: location.id, question: location.question, selectedAnswer: button.dataset.answer, correctAnswer: location.correctAnswer, isCorrect, points });
   elements.answerList.querySelectorAll(".answer-button").forEach((option) => {
     option.disabled = true;
     if (option.dataset.answer === location.correctAnswer) option.classList.add("correct");
@@ -112,13 +117,46 @@ function showReview() {
   elements.result.hidden = true;
   elements.reviewScore.textContent = state.score.toLocaleString();
   elements.reviewCorrect.textContent = `${correct}/${state.answers.length}`;
-  elements.reviewList.innerHTML = state.answers.map((answer, index) => `<div class="review-item ${answer.isCorrect ? "review-correct" : "review-wrong"}"><span class="review-number">${String(index + 1).padStart(2, "0")}</span><div><strong>${answer.question}</strong><span>${answer.isCorrect ? "Correct" : `Correct answer: ${answer.correctAnswer}`}</span></div><b>${answer.points > 0 ? "+" : ""}${answer.points}</b></div>`).join("");
+  elements.reviewList.textContent = "";
+  state.answers.forEach((answer, index) => {
+    const item = document.createElement("div");
+    item.className = `review-item ${answer.isCorrect ? "review-correct" : "review-wrong"}`;
+    const number = document.createElement("span");
+    number.className = "review-number";
+    number.textContent = String(index + 1).padStart(2, "0");
+    const details = document.createElement("div");
+    const question = document.createElement("strong");
+    question.textContent = answer.question;
+    const result = document.createElement("span");
+    result.textContent = answer.isCorrect ? "Correct" : `Correct answer: ${answer.correctAnswer}`;
+    details.append(question, result);
+    const points = document.createElement("b");
+    points.textContent = `${answer.points > 0 ? "+" : ""}${answer.points}`;
+    item.append(number, details, points);
+    elements.reviewList.appendChild(item);
+  });
   elements.review.hidden = false;
 }
 
-function submitScore(event) {
+async function submitScore(event) {
   event.preventDefault();
-  elements.leaderboardSubmit.querySelector("label").textContent = "Name noted for future leaderboard support";
+  const name = elements.playerName.value.trim();
+  if (!name) return;
+  if (!window.adyGuessrSupabase) {
+    elements.leaderboardSubmit.querySelector("label").textContent = "Leaderboard connection unavailable.";
+    return;
+  }
+  const { error } = await window.adyGuessrSupabase.functions.invoke("submit-score", {
+    body: {
+      mode: leaderboardMode,
+      playerName: name,
+      answers: state.answers.map(({ questionId, selectedAnswer }) => ({ questionId, selectedAnswer }))
+    }
+  });
+  elements.leaderboardSubmit.querySelector("label").textContent = error
+    ? "Could not submit score. Try again."
+    : "Score submitted to the leaderboard.";
+  if (!error) elements.leaderboardSubmit.querySelector("button").disabled = true;
 }
 
 async function startGame() {

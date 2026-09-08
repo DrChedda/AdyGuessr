@@ -65,7 +65,13 @@ function selectMapGuess(point) {
   const isCorrect = points > 0;
   state.answered = true;
   state.guess = point;
-  state.answers[state.currentRound] = { isCorrect, points, distance };
+  state.answers[state.currentRound] = {
+    questionId: question.id,
+    guess: { x: point.x, z: point.z },
+    isCorrect,
+    points,
+    distance
+  };
   state.score += points;
   placeMarker("guess-marker", point);
   placeMarker("target-marker", question.target);
@@ -90,9 +96,25 @@ function showReview() {
   elements.review.hidden = false;
 }
 
-function submitScore(event) {
+async function submitScore(event) {
   event.preventDefault();
-  elements.leaderboardSubmit.querySelector("label").textContent = "Name noted for future leaderboard support";
+  const name = elements.playerName.value.trim();
+  if (!name) return;
+  if (!window.adyGuessrSupabase) {
+    elements.leaderboardSubmit.querySelector("label").textContent = "Leaderboard connection unavailable.";
+    return;
+  }
+  const { error } = await window.adyGuessrSupabase.functions.invoke("submit-score", {
+    body: {
+      mode: "level-0",
+      playerName: name,
+      answers: state.answers.map(({ questionId, guess }) => ({ questionId, guess }))
+    }
+  });
+  elements.leaderboardSubmit.querySelector("label").textContent = error
+    ? "Could not submit score. Try again."
+    : "Score submitted to the leaderboard.";
+  if (!error) elements.leaderboardSubmit.querySelector("button").disabled = true;
 }
 
 async function startGame() {

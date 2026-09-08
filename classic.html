@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://amqzikqtsvtbqluibkzo.supabase.co; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self';">
   <title>Classic Locations | AdyGuessr</title>
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="stylesheet" href="styles.css">
@@ -28,6 +29,8 @@
     <section class="review-screen" id="review-screen" hidden aria-labelledby="review-title"><p class="eyebrow">Game review</p><h1 id="review-title">Round complete</h1><div class="review-summary"><strong id="review-score">0</strong><span>points</span><span class="review-divider">|</span><strong id="review-correct">0/0</strong><span>correct</span></div><div class="review-list" id="review-list"></div><form class="leaderboard-submit" id="leaderboard-submit"><label for="player-name">Submit your score</label><div><input id="player-name" name="playerName" maxlength="24" placeholder="Your name" required><button class="secondary-button" type="submit">Submit</button></div></form><div class="review-actions"><a class="secondary-button" href="classic.html?mode=locations">Play again</a><a class="back-button" href="index.html?mode=locations">Back to modes</a></div></section>
   </main>
   <div class="image-viewer" id="image-viewer" hidden role="dialog" aria-modal="true" aria-label="Enlarged game image"><button class="image-viewer-close" id="image-viewer-close" type="button" aria-label="Close enlarged image">&times;</button><img id="image-viewer-image" src="" alt="Enlarged question image"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js" integrity="sha384-YieCqqg9gQufX7+5HcFvCEg/n3KUEdl8/Jb+A6J0npf1mB740VayvwKjTrtCeUoy" crossorigin="anonymous"></script>
+  <script src="supabase-client.js"></script>
   <script src="classic.js" defer></script>
 </body>
 </html>

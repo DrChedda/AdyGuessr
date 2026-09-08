@@ -10,18 +10,38 @@ const leaderboardList = document.querySelector("#leaderboard-list");
 const leaderboardModeLabel = document.querySelector("#leaderboard-mode");
 const modeOptions = document.querySelectorAll(".mode-option:not(.mode-option--disabled)");
 
-function renderLeaderboard(mode) {
+async function renderLeaderboard(mode) {
   if (!leaderboardTitle || !leaderboardList) return;
   leaderboardModeLabel.textContent = modeLabels[mode];
-  const entries = JSON.parse(localStorage.getItem(`adyguessr-leaderboard-${mode}`) || "[]");
-  const rows = entries.length ? entries : [{ name: "No scores yet", score: "--" }];
+  leaderboardList.innerHTML = "<div class=\"leaderboard-row\"><span>--</span><strong>Loading scores...</strong><b>--</b></div>";
+  if (!window.adyGuessrSupabase) {
+    leaderboardList.innerHTML = "<div class=\"leaderboard-row\"><span>--</span><strong>Leaderboard unavailable</strong><b>--</b></div>";
+    return;
+  }
+  const { data: entries, error } = await window.adyGuessrSupabase
+    .from("leaderboard_entries")
+    .select("player_name, score")
+    .eq("mode", mode)
+    .order("score", { ascending: false })
+    .limit(10);
+  if (error) {
+    leaderboardList.innerHTML = "<div class=\"leaderboard-row\"><span>--</span><strong>Leaderboard unavailable</strong><b>--</b></div>";
+    return;
+  }
+  const rows = entries.length ? entries : [{ player_name: "No scores yet", score: "--" }];
   leaderboardList.innerHTML = rows.slice(0, 10).map((entry, index) => `
     <div class="leaderboard-row ${index === 0 ? "leaderboard-row--highlight" : ""}">
       <span>${String(index + 1).padStart(2, "0")}</span>
-      <strong>${entry.name}</strong>
+      <strong>${escapeHtml(entry.player_name)}</strong>
       <b>${typeof entry.score === "number" ? entry.score.toLocaleString() : entry.score}</b>
     </div>
   `).join("");
+}
+
+function escapeHtml(value) {
+  const element = document.createElement("span");
+  element.textContent = value;
+  return element.innerHTML;
 }
 
 modeOptions.forEach((option) => {
