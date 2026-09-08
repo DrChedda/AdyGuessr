@@ -65,6 +65,9 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .mode-option strong { font-size: 1rem; }
 .mode-option span { color: var(--muted); font-size: 0.8rem; }
 .mode-option:hover, .mode-option.selected { border-color: var(--mint-dark); background: #18221c; }
+.mode-option--disabled { cursor: not-allowed; border-color: #222; color: #666; background: #0b0b0b; opacity: 0.65; }
+.mode-option--disabled:hover { border-color: #222; background: #0b0b0b; }
+.mode-option--disabled span { color: #555; }
 .mode-option:disabled { cursor: not-allowed; border-color: #222; color: #666; background: #0b0b0b; opacity: 0.65; }
 .mode-option:disabled span { color: #555; }
 .mode-option.selected { box-shadow: inset 3px 0 0 var(--mint); }

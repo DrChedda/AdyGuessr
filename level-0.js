@@ -63,7 +63,7 @@ function selectMapGuess(point) {
   const isCorrect = points > 0;
   state.answered = true;
   state.guess = point;
-  state.answers[state.currentRound] = isCorrect;
+  state.answers[state.currentRound] = { isCorrect, points, distance };
   state.score += points;
   placeMarker("guess-marker", point);
   placeMarker("target-marker", question.target);
@@ -78,8 +78,13 @@ function showReview() {
   elements.game.hidden = true;
   elements.result.hidden = true;
   elements.reviewScore.textContent = state.score.toLocaleString();
-  elements.reviewCorrect.textContent = `${state.questions.filter((question, index) => state.answers[index]).length}/${state.questions.length}`;
-  elements.reviewList.innerHTML = state.questions.map((question, index) => `<div class="review-item"><span class="review-number">${String(index + 1).padStart(2, "0")}</span><div><strong>${question.question}</strong><span>${question.answer}</span></div></div>`).join("");
+  elements.reviewCorrect.textContent = `${state.answers.filter((answer) => answer?.isCorrect).length}/${state.questions.length}`;
+  elements.reviewList.innerHTML = state.questions.map((question, index) => {
+    const answer = state.answers[index] || { points: 0, distance: null };
+    const distanceText = answer.distance === null ? "No guess" : `${answer.distance.toLocaleString()} studs away`;
+    const pointsText = `${answer.points > 0 ? "+" : ""}${answer.points.toLocaleString()} points`;
+    return `<div class="review-item"><span class="review-number">${String(index + 1).padStart(2, "0")}</span><div><strong>${question.question}</strong><span>${question.answer} · ${distanceText}</span></div><b>${pointsText}</b></div>`;
+  }).join("");
   elements.review.hidden = false;
 }
 
