@@ -2,7 +2,7 @@ const fallbackLocations = [
   { question: "Where was this picture taken?", image: "images/locations/Screenshot_1.png", answers: ["A random place in Level-0", "Infinitelands Staircase", "A removed landmark", "Level-0.35"], correctAnswer: "Infinitelands Staircase" }
 ];
 
-const state = { locations: [], currentRound: 0, score: 0, answered: false, mode: null, roundLimit: 0 };
+const state = { locations: [], currentRound: 0, score: 0, answered: false, mode: null, roundLimit: 0, image: "" };
 const elements = {
   modeScreen: document.querySelector("#mode-screen"),
   modeOptions: document.querySelectorAll(".mode-option"),
@@ -21,7 +21,10 @@ const elements = {
   resultTitle: document.querySelector("#result-title"),
   resultCopy: document.querySelector("#result-copy"),
   next: document.querySelector("#next-button"),
-  back: document.querySelector("#back-button")
+  back: document.querySelector("#back-button"),
+  viewer: document.querySelector("#image-viewer"),
+  viewerImage: document.querySelector("#image-viewer-image"),
+  viewerClose: document.querySelector("#image-viewer-close")
 };
 
 function showWarning(message) {
@@ -65,11 +68,9 @@ async function loadLocations(mode) {
       state.locations = await loadJsonFile(`${mode}.json`);
     }
     if (state.locations.length === 0) throw new Error("No questions were loaded");
-    return true;
   } catch (error) {
     state.locations = fallbackLocations;
     showWarning("The selected game mode could not be loaded. Using built-in sample questions instead.");
-    return false;
   }
 }
 
@@ -81,6 +82,7 @@ function renderRound() {
   elements.questionTitle.textContent = location.question;
   elements.sceneNumber.textContent = String(state.currentRound + 1).padStart(2, "0");
   elements.sceneImage.style.backgroundImage = "none";
+  state.image = location.image || "";
   if (location.image) {
     const image = new Image();
     image.onload = () => {
@@ -164,6 +166,7 @@ function returnToStart() {
   state.answered = false;
   state.mode = null;
   state.roundLimit = 0;
+  state.image = "";
   elements.game.hidden = true;
   elements.result.hidden = true;
   elements.roundStatus.hidden = true;
@@ -173,7 +176,27 @@ function returnToStart() {
   elements.start.disabled = true;
 }
 
+function openImageViewer() {
+  if (!state.image) return;
+  elements.viewerImage.src = state.image;
+  elements.viewer.hidden = false;
+  elements.viewerClose.focus();
+}
+
+function closeImageViewer() {
+  elements.viewer.hidden = true;
+  elements.viewerImage.src = "";
+}
+
 elements.modeOptions.forEach((option) => option.addEventListener("click", () => chooseMode(option)));
 elements.start.addEventListener("click", startGame);
 elements.next.addEventListener("click", nextRound);
 elements.back.addEventListener("click", returnToStart);
+elements.sceneImage.addEventListener("click", openImageViewer);
+elements.viewerClose.addEventListener("click", closeImageViewer);
+elements.viewer.addEventListener("click", (event) => {
+  if (event.target === elements.viewer) closeImageViewer();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !elements.viewer.hidden) closeImageViewer();
+});

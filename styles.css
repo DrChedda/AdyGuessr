@@ -27,7 +27,10 @@ button { cursor: pointer; }
 .app-shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 28px 0 24px; }
 .topbar, .scene-meta, .card-heading { display: flex; align-items: center; justify-content: space-between; }
 .topbar { gap: 22px; padding-bottom: 34px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 1.05rem; font-weight: 700; text-decoration: none; letter-spacing: 0.02em; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; }
+.brand-logo { width: 32px; height: 32px; flex: 0 0 32px; object-fit: contain; }
+.brand-name { color: var(--ink); text-decoration: none; }
+.brand-name:hover { color: var(--mint); }
 .load-warning { margin: 0 auto 20px; padding: 10px 12px; border: 1px solid #765044; border-radius: 4px; color: #f2c2b5; background: #2b1a17; font-size: 0.8rem; line-height: 1.4; }
 .round-status { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); box-shadow: 0 0 0 5px rgba(231, 132, 101, 0.14); }
@@ -53,11 +56,12 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .community-note p { margin: 0 0 9px; }
 .community-note p:first-child { color: var(--ink); font-weight: 700; }
 .community-note strong { color: var(--mint); }
+.community-note a { color: var(--mint); }
+.community-note a:hover { color: var(--ink); }
 .game-grid { display: grid; grid-template-areas: "scene guess"; grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.75fr); gap: 22px; }
 .scene-card, .guess-card, .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
 .scene-card { grid-area: scene; overflow: hidden; }
-.scene-image { position: relative; min-height: 530px; overflow: hidden; background-color: #252d29; background-position: center; background-repeat: no-repeat; background-size: cover; }
-.scene-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.28); }
+.scene-image { position: relative; min-height: 530px; overflow: hidden; cursor: zoom-in; background-color: #252d29; background-position: center; background-repeat: no-repeat; background-size: cover; }
 .scene-meta { padding: 15px 20px; color: var(--muted); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
 .guess-card { grid-area: guess; padding: 26px; }
 .back-button { margin-bottom: 24px; padding: 0; border: 0; color: var(--muted); background: transparent; font-size: 0.78rem; font-weight: 700; }
@@ -72,7 +76,6 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .answer-button.correct { border-color: var(--mint-dark); color: #eaf6ed; background: #244333; }
 .answer-button.selected-wrong { border-color: var(--coral); color: #fff0eb; background: #4b2925; }
 .answer-button.correct .answer-letter { color: #102017; background: var(--mint); }
-.answer-button.selected-wrong .answer-letter { color: #2b1512; background: var(--coral); }
 .answer-button.selected-correct .answer-letter { color: #fff; background: var(--mint-dark); }
 .answer-button.selected-wrong .answer-letter { color: #fff; background: var(--coral); }
 .secondary-button { padding: 13px 16px; border: 0; border-radius: 5px; font-weight: 800; transition: transform 160ms ease; }
@@ -81,6 +84,10 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .result-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 22px; padding: 24px 28px; }
 .result-card p:last-child { margin: 7px 0 0; color: var(--muted); font-size: 0.9rem; }
 .secondary-button { width: auto; color: #000; background: var(--mint); }
+.image-viewer { position: fixed; z-index: 10; inset: 0; display: grid; place-items: center; padding: 28px; background: rgba(0, 0, 0, 0.92); cursor: zoom-out; }
+.image-viewer img { max-width: 94vw; max-height: 92vh; object-fit: contain; cursor: default; }
+.image-viewer-close { position: absolute; top: 18px; right: 22px; width: 40px; height: 40px; border: 1px solid #555; color: var(--ink); background: #111; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.image-viewer-close:hover { color: #000; background: var(--mint); }
 
 @media (max-width: 780px) {
   .app-shell { width: min(100% - 28px, 620px); padding-top: 18px; }
