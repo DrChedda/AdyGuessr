@@ -82,7 +82,7 @@ async function loadLocations(mode) {
     return true;
   } catch (error) {
     state.locations = [];
-    showWarning("The selected game mode could not be loaded. Check its JSON file and try again.");
+    showWarning("The selected game mode could not be loaded. Please open the developer console and send any error messages to AnthonyL1475.");
     return false;
   }
 }
