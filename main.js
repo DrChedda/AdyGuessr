@@ -1,8 +1,4 @@
-const fallbackLocations = [
-  { question: "Where was this picture taken?", image: "images/locations/Screenshot_1.png", answers: ["A random place in Level-0", "Infinitelands Staircase", "A removed landmark", "Level-0.35"], correctAnswer: "Infinitelands Staircase" }
-];
-
-const state = { locations: [], currentRound: 0, score: 0, answered: false, mode: null, roundLimit: 0, image: "" };
+const state = { locations: [], currentRound: 0, score: 0, answered: false, mode: null, roundLimit: 0, image: "", answers: [] };
 const elements = {
   modeScreen: document.querySelector("#mode-screen"),
   modeOptions: document.querySelectorAll(".mode-option"),
@@ -22,6 +18,12 @@ const elements = {
   resultCopy: document.querySelector("#result-copy"),
   next: document.querySelector("#next-button"),
   back: document.querySelector("#back-button"),
+  review: document.querySelector("#review-screen"),
+  reviewScore: document.querySelector("#review-score"),
+  reviewCorrect: document.querySelector("#review-correct"),
+  reviewList: document.querySelector("#review-list"),
+  replay: document.querySelector("#review-replay"),
+  home: document.querySelector("#review-home"),
   viewer: document.querySelector("#image-viewer"),
   viewerImage: document.querySelector("#image-viewer-image"),
   viewerClose: document.querySelector("#image-viewer-close")
@@ -30,6 +32,15 @@ const elements = {
 function showWarning(message) {
   elements.warning.textContent = message;
   elements.warning.hidden = false;
+}
+
+function shuffle(items) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
 }
 
 function validateLocations(locations) {
@@ -63,14 +74,16 @@ async function loadLocations(mode) {
         loadJsonFile("entities.json"),
         loadJsonFile("locations.json")
       ]);
-      state.locations = [...entities, ...locations].sort(() => Math.random() - 0.5);
+      state.locations = shuffle([...entities, ...locations]);
     } else {
-      state.locations = await loadJsonFile(`${mode}.json`);
+      state.locations = shuffle(await loadJsonFile(`${mode}.json`));
     }
     if (state.locations.length === 0) throw new Error("No questions were loaded");
+    return true;
   } catch (error) {
-    state.locations = fallbackLocations;
-    showWarning("The selected game mode could not be loaded. Using built-in sample questions instead.");
+    state.locations = [];
+    showWarning("The selected game mode could not be loaded. Check its JSON file and try again.");
+    return false;
   }
 }
 
@@ -96,7 +109,7 @@ function renderRound() {
     showWarning("No image is configured for this question. Showing a placeholder instead.");
   }
   elements.answerList.innerHTML = "";
-  location.answers.forEach((choice, index) => {
+  shuffle(location.answers).forEach((choice, index) => {
     const button = document.createElement("button");
     button.className = "answer-button";
     button.type = "button";
@@ -114,6 +127,7 @@ function selectAnswer(button, location) {
   const isCorrect = button.dataset.answer === location.correctAnswer;
   const points = isCorrect ? 10 : -5;
   state.score += points;
+  state.answers.push({ question: location.question, correctAnswer: location.correctAnswer, isCorrect, points });
   elements.answerList.querySelectorAll(".answer-button").forEach((option) => {
     option.disabled = true;
     if (option.dataset.answer === location.correctAnswer) option.classList.add("correct");
@@ -125,18 +139,33 @@ function selectAnswer(button, location) {
     ? "You earned 10 points."
     : `You lost 5 points. The correct answer was ${location.correctAnswer}.`;
   elements.result.hidden = false;
-  elements.next.textContent = state.currentRound === state.roundLimit - 1 ? "Play again" : "Next location →";
+  elements.next.textContent = state.currentRound === state.roundLimit - 1 ? "View review" : "Next location →";
   elements.result.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function nextRound() {
   if (state.currentRound === state.roundLimit - 1) {
-    state.currentRound = 0;
-    state.score = 0;
+    showReview();
   } else {
     state.currentRound += 1;
+    renderRound();
   }
-  renderRound();
+}
+
+function showReview() {
+  const correct = state.answers.filter((answer) => answer.isCorrect).length;
+  elements.game.hidden = true;
+  elements.result.hidden = true;
+  elements.reviewScore.textContent = state.score.toLocaleString();
+  elements.reviewCorrect.textContent = `${correct}/${state.answers.length}`;
+  elements.reviewList.innerHTML = state.answers.map((answer, index) => `
+    <div class="review-item ${answer.isCorrect ? "review-correct" : "review-wrong"}">
+      <span class="review-number">${String(index + 1).padStart(2, "0")}</span>
+      <div><strong>${answer.question}</strong><span>${answer.isCorrect ? "Correct" : `Correct answer: ${answer.correctAnswer}`}</span></div>
+      <b>${answer.points > 0 ? "+" : ""}${answer.points}</b>
+    </div>
+  `).join("");
+  elements.review.hidden = false;
 }
 
 function chooseMode(button) {
@@ -148,12 +177,18 @@ function chooseMode(button) {
 
 async function startGame() {
   elements.start.disabled = true;
-  await loadLocations(state.mode);
+  const loaded = await loadLocations(state.mode);
+  if (!loaded) {
+    elements.start.disabled = false;
+    return;
+  }
   state.roundLimit = state.locations.length;
   state.currentRound = 0;
   state.score = 0;
+  state.answers = [];
   elements.modeScreen.hidden = true;
   elements.game.hidden = false;
+  elements.review.hidden = true;
   elements.roundStatus.hidden = false;
   elements.scorePanel.hidden = false;
   renderRound();
@@ -167,8 +202,10 @@ function returnToStart() {
   state.mode = null;
   state.roundLimit = 0;
   state.image = "";
+  state.answers = [];
   elements.game.hidden = true;
   elements.result.hidden = true;
+  elements.review.hidden = true;
   elements.roundStatus.hidden = true;
   elements.scorePanel.hidden = true;
   elements.modeScreen.hidden = false;
@@ -192,6 +229,8 @@ elements.modeOptions.forEach((option) => option.addEventListener("click", () => 
 elements.start.addEventListener("click", startGame);
 elements.next.addEventListener("click", nextRound);
 elements.back.addEventListener("click", returnToStart);
+elements.replay.addEventListener("click", startGame);
+elements.home.addEventListener("click", returnToStart);
 elements.sceneImage.addEventListener("click", openImageViewer);
 elements.viewerClose.addEventListener("click", closeImageViewer);
 elements.viewer.addEventListener("click", (event) => {

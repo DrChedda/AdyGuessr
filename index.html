@@ -86,6 +86,21 @@
 			<button class="secondary-button" id="next-button" type="button">Next location <span aria-hidden="true">&rarr;</span></button>
 		</section>
 
+		<section class="review-screen" id="review-screen" hidden aria-labelledby="review-title">
+			<p class="eyebrow">Game review</p>
+			<h1 id="review-title">Round complete</h1>
+			<div class="review-summary">
+				<strong id="review-score">0</strong><span>points</span>
+				<span class="review-divider">|</span>
+				<strong id="review-correct">0/0</strong><span>correct</span>
+			</div>
+			<div class="review-list" id="review-list"></div>
+			<div class="review-actions">
+				<button class="secondary-button" id="review-replay" type="button">Play again</button>
+				<button class="back-button" id="review-home" type="button">Back to start</button>
+			</div>
+		</section>
+
 	</main>
 	<div class="image-viewer" id="image-viewer" hidden role="dialog" aria-modal="true" aria-label="Enlarged game image">
 		<button class="image-viewer-close" id="image-viewer-close" type="button" aria-label="Close enlarged image">&times;</button>
