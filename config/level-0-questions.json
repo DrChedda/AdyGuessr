@@ -1,0 +1,67 @@
+[
+  {
+    "question": "Where is Lion Den",
+    "target": { "x": -153, "z": -200 },
+    "answer": "Lions Den"
+  },
+  {
+    "question": "Where is Mold Bastion",
+    "target": { "x": 6045, "z": 648 },
+    "answer": "Mold Bastion"
+  },
+  {
+    "question": "Where is the Deadzone",
+    "target": { "x": -5863, "z": 5475 },
+    "answer": "Deadzone"
+  },
+  {
+    "question": "Where is Point 7890",
+    "target": { "x": 7890, "z": 7890 },
+    "answer": "Point 7890"
+  },
+  {
+    "question": "Where is the Oldgen Region",
+    "target": { "x": -6420, "z": 1950 },
+    "answer": "Oldgen Region"
+  },
+  {
+    "question": "Where is Project Phaserunner (PPR)",
+    "target": { "x": -430, "z": -699 },
+    "answer": "Project Phaserunner (PPR)"
+  },
+  {
+    "question": "Where is the Infinitelands Megastructure",
+    "target": { "x": 2032, "z": 7457 },
+    "answer": "Infinitelands Megastructure"
+  },
+  {
+    "question": "Where is the Level-0.35 entrance",
+    "target": { "x": 5000, "z": 3700 },
+    "answer": "Level-0.35 \"The Elder's Grave\" Entrance"
+  },
+  {
+    "question": "Where is the Level Fun entrance",
+    "target": { "x": 39, "z": -3724 },
+    "answer": "Level Fun Entrance"
+  },
+  {
+    "question": "Where are the Noclipping Pitfalls",
+    "target": { "x": 755, "z": -2773 },
+    "answer": "Noclipping Pitfalls"
+  },
+  {
+    "question": "Where is the Glitch House",
+    "target": { "x": 7500, "z": 980 },
+    "answer": "Glitch House"
+  },
+  {
+    "question": "Where is The Cinema",
+    "target": { "x": 412, "z": 2919 },
+    "answer": "The Cinema"
+  },
+  {
+    "question": "Where is Pearley's Den (Dead Den)",
+    "target": { "x": 6094, "z": -1752 },
+    "answer": "Pearley's Den (Dead Den)"
+  }
+]

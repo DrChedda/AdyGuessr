@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="AdyGuessr, a simple location guessing game.">
+		<meta name="description" content="AdyGuessr game modes.">
 	<title>AdyGuessr</title>
 	<link rel="icon" type="image/png" href="icon.png">
 	<link rel="stylesheet" href="styles.css">
@@ -25,34 +25,31 @@
 				<span class="score-unit">pts</span>
 			</div>
 		</header>
-		<p class="load-warning" id="load-warning" role="status" hidden></p>
-
 		<section class="mode-screen" id="mode-screen" aria-labelledby="mode-title">
 			<p class="eyebrow">Game setup</p>
 			<h1 id="mode-title">Choose a mode</h1>
 			<div class="mode-list" role="group" aria-label="Game modes">
-				<button class="mode-option" type="button" data-mode="entities" disabled>
+				<a class="mode-option" href="classic.html?mode=entities">
 					<strong>Entities</strong>
 					<span>Guess which entity is shown by name.</span>
 					<span>20 Questions.</span>
-				</button>
-				<button class="mode-option" type="button" data-mode="locations">
+				</a>
+				<a class="mode-option" href="classic.html?mode=locations">
 					<strong>Locations</strong>
 					<span>Guess where the picture was taken.</span>
 					<span>20 Questions.</span>
-				</button>
-				<button class="mode-option" type="button" data-mode="mixed" disabled>
+				</a>
+				<a class="mode-option" href="level-0.html">
 					<strong>Level-0 Locations</strong>
-					<span>Includes a map like actual geoguessr!</span>
+					<span>Find locations by placing guesses on the map, just like GeoGuessr!</span>
 					<span>20 Questions.</span>
-				</button>
-				<button class="mode-option" type="button" data-mode="all" disabled>
+				</a>
+				<a class="mode-option" href="classic.html?mode=all">
 					<strong>Guessr All</strong>
-					<span>Mix all question types at random.</span>
+					<span>Mix all question types at random on the basic</span>
 					<span>30 Questions.</span>
-				</button>
+				</a>
 			</div>
-			<button class="start-button" id="start-button" type="button" disabled>Start game <span aria-hidden="true">&rarr;</span></button>
 			<div class="community-note">
 				<p>Created by <strong>AnthonyL1475 / OfficialWalmartBag</strong></p>
 				<p>This is a fanmade GeoGuessr-type game for AdySYNC | The Backrooms.</p>
@@ -63,57 +60,6 @@
 			</div>
 		</section>
 
-		<section class="game-grid" id="game-grid" aria-label="Guessing game" hidden>
-			<div class="scene-card">
-				<div class="scene-image" id="scene-image" role="img" aria-label="Current location preview">
-				</div>
-				<div class="scene-meta">
-					<span id="scene-number">01</span>
-				</div>
-			</div>
-
-			<aside class="guess-card">
-				<button class="back-button" id="back-button" type="button">&larr; Back to start</button>
-				<div class="card-heading">
-					<div>
-						<p class="eyebrow">Make your guess</p>
-						<h2 id="question-title">Where is this?</h2>
-					</div>
-				</div>
-				<div class="answer-list" id="answer-list" role="group" aria-label="Possible locations"></div>
-				<p class="helper-text">Choose the region that best matches the scene.</p>
-			</aside>
-		</section>
-
-		<section class="result-card" id="result-card" hidden aria-live="polite">
-			<div>
-				<p class="eyebrow">Round complete</p>
-				<h2 id="result-title">Nice work.</h2>
-				<p id="result-copy">Your result will appear here.</p>
-			</div>
-			<button class="secondary-button" id="next-button" type="button">Next location <span aria-hidden="true">&rarr;</span></button>
-		</section>
-
-		<section class="review-screen" id="review-screen" hidden aria-labelledby="review-title">
-			<p class="eyebrow">Game review</p>
-			<h1 id="review-title">Round complete</h1>
-			<div class="review-summary">
-				<strong id="review-score">0</strong><span>points</span>
-				<span class="review-divider">|</span>
-				<strong id="review-correct">0/0</strong><span>correct</span>
-			</div>
-			<div class="review-list" id="review-list"></div>
-			<div class="review-actions">
-				<button class="secondary-button" id="review-replay" type="button">Play again</button>
-				<button class="back-button" id="review-home" type="button">Back to start</button>
-			</div>
-		</section>
-
 	</main>
-	<div class="image-viewer" id="image-viewer" hidden role="dialog" aria-modal="true" aria-label="Enlarged game image">
-		<button class="image-viewer-close" id="image-viewer-close" type="button" aria-label="Close enlarged image">&times;</button>
-		<img id="image-viewer-image" src="" alt="Enlarged question image">
-	</div>
-	<script src="main.js" defer></script>
 </body>
 </html>

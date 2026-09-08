@@ -21,7 +21,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-button, a { font: inherit; }
+button, a { font: inherit; text-decoration: none; }
 button { cursor: pointer; }
 
 .app-shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 28px 0 24px; }
@@ -61,7 +61,7 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .review-actions { display: flex; align-items: center; gap: 18px; margin-top: 24px; }
 .review-actions .back-button { margin: 0; }
 .mode-list { display: grid; gap: 10px; }
-.mode-option { display: grid; gap: 5px; padding: 17px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--surface); text-align: left; }
+.mode-option { display: grid; gap: 5px; padding: 17px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--surface); text-align: left; text-decoration: none; }
 .mode-option strong { font-size: 1rem; }
 .mode-option span { color: var(--muted); font-size: 0.8rem; }
 .mode-option:hover, .mode-option.selected { border-color: var(--mint-dark); background: #18221c; }
@@ -80,9 +80,29 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .scene-card, .guess-card, .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
 .scene-card { grid-area: scene; overflow: hidden; }
 .scene-image { position: relative; min-height: 530px; overflow: hidden; cursor: zoom-in; background-color: #252d29; background-position: center; background-repeat: no-repeat; background-size: cover; }
+.level0-map { position: relative; min-height: 530px; overflow: hidden; background: #050607; }
+.map-surface, .map-world { position: absolute; inset: 0; overflow: hidden; }
+.map-surface { cursor: crosshair; touch-action: none; }
+.map-surface.dragging { cursor: grabbing; }
+.map-world { background: radial-gradient(circle at 30% 28%, rgba(82, 67, 47, 0.08), transparent 25%), linear-gradient(180deg, #161615 0%, #101112 45%, #070809 100%); }
+.map-world::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.6); pointer-events: none; }
+.axis-overlay, .walls-layer, .points-layer, .guess-layer { position: absolute; inset: 0; }
+.axis-overlay { z-index: 1; pointer-events: none; }
+.axis-line { position: absolute; z-index: 2; background: #474442; box-shadow: 0 0 8px rgba(141, 98, 73, 0.6); pointer-events: none; }
+.axis-line--vertical { top: 0; bottom: 0; width: 2px; transform: translateX(-50%); }
+.axis-line--horizontal { left: 0; right: 0; height: 2px; transform: translateY(-50%); }
+.walls-layer { z-index: 10; pointer-events: none; }
+.points-layer { z-index: 30; pointer-events: none; }
+.guess-layer { z-index: 40; pointer-events: none; }
+.world-border-line { position: absolute; z-index: 15; background: #a1a7ac; box-shadow: 0 0 12px rgba(50, 67, 90, 0.8); pointer-events: none; }
+.map-point-container { position: absolute; display: flex; width: 0; height: 0; align-items: center; justify-content: center; pointer-events: none; transform: translate(-50%, -50%); }
+.point-marker { position: absolute; width: 10px; height: 10px; background-color: #ff3333; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 6px rgba(0, 0, 0, 0.6); }
+.point-label { position: absolute; top: 0; left: 0; color: white; font-family: sans-serif; font-size: 11px; font-weight: bold; text-shadow: 1px 1px 2px black, -1px -1px 2px black; white-space: nowrap; transform: translate(-50%, 12px); }
+.guess-marker { position: absolute; width: 14px; height: 14px; border: 3px solid #ffcf66; border-radius: 50%; background: #e78465; box-shadow: 0 0 0 4px rgba(255, 207, 102, 0.25); transform: translate(-50%, -50%); }
+.target-marker { position: absolute; width: 14px; height: 14px; border: 3px solid #8bc49c; border-radius: 50%; background: #b8dfc4; box-shadow: 0 0 0 4px rgba(139, 196, 156, 0.25); transform: translate(-50%, -50%); }
 .scene-meta { padding: 15px 20px; color: var(--muted); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
 .guess-card { grid-area: guess; padding: 26px; }
-.back-button { margin-bottom: 24px; padding: 0; border: 0; color: var(--muted); background: transparent; font-size: 0.78rem; font-weight: 700; }
+.back-button { display: inline-block; margin-bottom: 24px; padding: 0; border: 0; color: var(--muted); background: transparent; font-size: 0.78rem; font-weight: 700; text-decoration: none; }
 .back-button:hover { color: var(--ink); }
 .card-heading { align-items: start; margin-bottom: 20px; }
 .card-heading h2, .result-card h2 { margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 1.8rem; font-weight: 400; }
@@ -113,6 +133,7 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
   .score-panel { margin-left: auto; }
   .game-grid { grid-template-areas: "scene" "guess"; grid-template-columns: 1fr; }
   .scene-image { min-height: 390px; }
+  .level0-map { min-height: 390px; }
   .result-card { align-items: stretch; flex-direction: column; }
   .secondary-button { width: 100%; }
   .review-screen { margin-top: 28px; }
