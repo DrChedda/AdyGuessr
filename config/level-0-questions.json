@@ -63,5 +63,55 @@
     "question": "Where is Pearley's Den (Dead Den)",
     "target": { "x": 6094, "z": -1752 },
     "answer": "Pearley's Den (Dead Den)"
+  },
+  {
+    "question": "Where is Calm",
+    "target": { "x": -2758, "z": 1027 },
+    "answer": "Calm"
+  },
+  {
+    "question": "Where is the Sinkhole",
+    "target": { "x": -389, "z": 5634 },
+    "answer": "Sinkhole"
+  },
+  {
+    "question": "Where is The Final Stop",
+    "target": { "x": 2900, "z": -150 },
+    "answer": "The Final Stop"
+  },
+  {
+    "question": "Where is the Crawlspace Labyrinth",
+    "target": { "x": -3730, "z": -6240 },
+    "answer": "Crawlspace Labyrinth"
+  },
+  {
+    "question": "Where is the Vending Machine Place",
+    "target": { "x": -1199, "z": 953 },
+    "answer": "Vending Machine Place"
+  },
+  {
+    "question": "Where is the Dark Bridge",
+    "target": { "x": 890, "z": -2090 },
+    "answer": "Dark Bridge"
+  },
+  {
+    "question": "Where is the Massive Dark Pillar Room",
+    "target": { "x": -1044, "z": -2678 },
+    "answer": "Massive Dark Pillar Room"
+  },
+  {
+    "question": "Where is W-M.E.G Outpost #2",
+    "target": { "x": 7666, "z": -1837 },
+    "answer": "W-M.E.G Outpost #2"
+  },
+  {
+    "question": "Where is Glacier",
+    "target": { "x": -1760, "z": -140 },
+    "answer": "Glacier"
+  },
+  {
+    "question": "Where is the Angel Room",
+    "target": { "x": 223, "z": -2153 },
+    "answer": "Angel Room"
   }
 ]

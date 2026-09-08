@@ -1,9 +1,11 @@
 const state = { questions: [], currentRound: 0, score: 0, answered: false, guess: null, answers: [] };
+const QUESTION_LIMIT = 20;
 const elements = {
   game: document.querySelector("#game-grid"), warning: document.querySelector("#load-warning"), roundLabel: document.querySelector("#round-label"), score: document.querySelector("#score"),
   questionTitle: document.querySelector("#question-title"), sceneNumber: document.querySelector("#scene-number"), guessLayer: document.querySelector(".guess-layer"), result: document.querySelector("#result-card"),
   resultTitle: document.querySelector("#result-title"), resultCopy: document.querySelector("#result-copy"), next: document.querySelector("#next-button"), review: document.querySelector("#review-screen"),
   reviewScore: document.querySelector("#review-score"), reviewCorrect: document.querySelector("#review-correct"), reviewList: document.querySelector("#review-list")
+  , leaderboardSubmit: document.querySelector("#leaderboard-submit"), playerName: document.querySelector("#player-name")
 };
 
 function showWarning(message) {
@@ -88,11 +90,16 @@ function showReview() {
   elements.review.hidden = false;
 }
 
+function submitScore(event) {
+  event.preventDefault();
+  elements.leaderboardSubmit.querySelector("label").textContent = "Name noted for future leaderboard support";
+}
+
 async function startGame() {
   try {
     const response = await fetch("config/level-0-questions.json");
     if (!response.ok) throw new Error("Level-0 questions could not be loaded");
-    state.questions = shuffle(await response.json());
+    state.questions = shuffle(await response.json()).slice(0, QUESTION_LIMIT);
     if (!state.questions.length) throw new Error("No Level-0 questions configured");
     elements.game.hidden = false;
     renderRound();
@@ -105,6 +112,7 @@ elements.next.addEventListener("click", () => {
   if (state.currentRound === state.questions.length - 1) showReview();
   else { state.currentRound += 1; renderRound(); }
 });
+elements.leaderboardSubmit.addEventListener("submit", submitScore);
 window.MapEngine.onMapClick = selectMapGuess;
 window.MapEngine.onMapRender = redrawMarkers;
 startGame();

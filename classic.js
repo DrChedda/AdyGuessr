@@ -1,4 +1,5 @@
 const mode = new URLSearchParams(window.location.search).get("mode") || "locations";
+const leaderboardMode = mode === "locations" ? "locations" : mode;
 const state = { locations: [], currentRound: 0, score: 0, answered: false, roundLimit: 0, image: "", answers: [] };
 const elements = {
   game: document.querySelector("#game-grid"), warning: document.querySelector("#load-warning"), roundStatus: document.querySelector("#round-status"),
@@ -7,6 +8,7 @@ const elements = {
   answerList: document.querySelector("#answer-list"), result: document.querySelector("#result-card"), resultTitle: document.querySelector("#result-title"),
   resultCopy: document.querySelector("#result-copy"), next: document.querySelector("#next-button"), review: document.querySelector("#review-screen"),
   reviewScore: document.querySelector("#review-score"), reviewCorrect: document.querySelector("#review-correct"), reviewList: document.querySelector("#review-list"),
+  leaderboardSubmit: document.querySelector("#leaderboard-submit"), playerName: document.querySelector("#player-name"),
   viewer: document.querySelector("#image-viewer"), viewerImage: document.querySelector("#image-viewer-image"), viewerClose: document.querySelector("#image-viewer-close")
 };
 
@@ -22,6 +24,10 @@ function shuffle(items) {
     [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
   }
   return shuffled;
+}
+
+function getQuestionLimit() {
+  return mode === "all" ? 30 : 20;
 }
 
 function validateLocations(locations) {
@@ -42,9 +48,9 @@ async function loadLocations() {
   try {
     if (mode === "all") {
       const [entities, locations] = await Promise.all([loadJsonFile("entities.json"), loadJsonFile("locations.json")]);
-      state.locations = shuffle([...entities, ...locations]);
+      state.locations = shuffle([...entities, ...locations]).slice(0, getQuestionLimit());
     } else {
-      state.locations = shuffle(await loadJsonFile(`${mode}.json`));
+      state.locations = shuffle(await loadJsonFile(`${mode}.json`)).slice(0, getQuestionLimit());
     }
     return state.locations.length > 0;
   } catch (error) {
@@ -110,6 +116,11 @@ function showReview() {
   elements.review.hidden = false;
 }
 
+function submitScore(event) {
+  event.preventDefault();
+  elements.leaderboardSubmit.querySelector("label").textContent = "Name noted for future leaderboard support";
+}
+
 async function startGame() {
   if (!await loadLocations()) return;
   state.roundLimit = state.locations.length;
@@ -122,6 +133,7 @@ elements.next.addEventListener("click", () => {
   if (state.currentRound === state.roundLimit - 1) showReview();
   else { state.currentRound += 1; renderRound(); }
 });
+elements.leaderboardSubmit.addEventListener("submit", submitScore);
 elements.sceneImage.addEventListener("click", () => {
   if (!state.image) return;
   elements.viewerImage.src = state.image;
