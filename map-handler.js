@@ -35,8 +35,8 @@
     const clamp = (val, min = -LIMIT, max = LIMIT) => Math.max(min, Math.min(max, val));
 
     const toWorld = (sX, sY, r) => ({
-        z: clamp(Math.round(centerZ - ((sX - r.width * 0.5) * studsPerPixel))),
-        x: clamp(Math.round(centerX + ((sY - r.height * 0.5) * studsPerPixel)))
+        z: clamp(centerZ - ((sX - r.width * 0.5) * studsPerPixel)),
+        x: clamp(centerX + ((sY - r.height * 0.5) * studsPerPixel))
     });
 
     function getSteps(rawStep) {
