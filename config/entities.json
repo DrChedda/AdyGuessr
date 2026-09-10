@@ -1,9 +1,9 @@
 [
   {
     "id": "entity-001",
-    "question": "Which entity is associated with this scene?",
+    "question": "STOP LOOKING AROUND YOU BUM",
     "image": "images/entities/the-watcher.jpg",
-    "answers": ["The Watcher", "The Wanderer", "The Mimic", "The Archivist"],
-    "correctAnswer": "The Watcher"
+    "answers": ["PEAKING AROUND", "STOP"],
+    "correctAnswer": "STOP"
   }
 ]
