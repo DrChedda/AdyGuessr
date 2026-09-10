@@ -1,6 +1,6 @@
 const mode = new URLSearchParams(window.location.search).get("mode") || "locations";
 const leaderboardMode = mode === "locations" ? "locations" : mode;
-const state = { locations: [], currentRound: 0, score: 0, answered: false, roundLimit: 0, image: "", answers: [] };
+const state = { locations: [], currentRound: 0, score: 0, answered: false, roundLimit: 0, image: "", answers: [], roundStartedAt: 0 };
 const elements = {
   game: document.querySelector("#game-grid"), warning: document.querySelector("#load-warning"), roundStatus: document.querySelector("#round-status"),
   scorePanel: document.querySelector("#score-panel"), roundLabel: document.querySelector("#round-label"), score: document.querySelector("#score"),
@@ -62,6 +62,7 @@ async function loadLocations() {
 function renderRound() {
   const location = state.locations[state.currentRound];
   state.answered = false;
+  state.roundStartedAt = performance.now();
   elements.roundLabel.textContent = `Round ${state.currentRound + 1} of ${state.roundLimit}`;
   elements.score.textContent = state.score.toLocaleString();
   elements.questionTitle.textContent = location.question;
@@ -96,19 +97,29 @@ function selectAnswer(button, location) {
   if (state.answered) return;
   state.answered = true;
   const isCorrect = button.dataset.answer === location.correctAnswer;
-  const points = isCorrect ? 10 : -5;
+  const timeSeconds = Math.max(0, (performance.now() - state.roundStartedAt) / 1000);
+  const points = isCorrect ? getLocationScore(timeSeconds) : 0;
   state.score += points;
-  state.answers.push({ questionId: location.id, question: location.question, selectedAnswer: button.dataset.answer, correctAnswer: location.correctAnswer, isCorrect, points });
+  state.answers.push({ questionId: location.id, question: location.question, selectedAnswer: button.dataset.answer, correctAnswer: location.correctAnswer, isCorrect, points, timeSeconds });
   elements.answerList.querySelectorAll(".answer-button").forEach((option) => {
     option.disabled = true;
     if (option.dataset.answer === location.correctAnswer) option.classList.add("correct");
   });
   button.classList.add(isCorrect ? "selected-correct" : "selected-wrong");
   elements.score.textContent = state.score.toLocaleString();
-  elements.resultTitle.textContent = isCorrect ? "Exactly right." : "Not quite this time.";
-  elements.resultCopy.textContent = isCorrect ? "You earned 10 points." : `You lost 5 points. The correct answer was ${location.correctAnswer}.`;
+  elements.resultTitle.textContent = isCorrect ? (timeSeconds <= 1 ? "Lightning fast." : timeSeconds <= 20 ? "Good pace." : "Base points secured.") : "Not quite this time.";
+  elements.resultCopy.textContent = isCorrect ? `You answered in ${timeSeconds.toFixed(1)} seconds and earned ${points.toLocaleString()} points.` : `The correct answer was ${location.correctAnswer}. You earned 0 points.`;
   elements.result.hidden = false;
   elements.next.textContent = state.currentRound === state.roundLimit - 1 ? "View review" : "Next location →";
+}
+
+function getLocationScore(timeSeconds) {
+  const fastestTime = 1;
+  const slowestTime = 20;
+  const maximumPoints = 5000;
+  const basePoints = 1000;
+  const progress = Math.max(0, Math.min(1, (slowestTime - timeSeconds) / (slowestTime - fastestTime)));
+  return Math.round(basePoints + (maximumPoints - basePoints) * progress);
 }
 
 function showReview() {
@@ -156,7 +167,7 @@ async function submitScore(event) {
     body: {
       mode: leaderboardMode,
       playerName: name,
-      answers: state.answers.map(({ questionId, selectedAnswer }) => ({ questionId, selectedAnswer }))
+      answers: state.answers.map(({ questionId, selectedAnswer, timeSeconds }) => ({ questionId, selectedAnswer, timeSeconds }))
     }
   });
   elements.leaderboardSubmit.querySelector("label").textContent = error?.context?.response?.status === 403

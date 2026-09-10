@@ -62,8 +62,11 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .review-actions .back-button { margin: 0; }
 .leaderboard-submit { display: grid; gap: 8px; margin-top: 24px; padding: 16px; border: 1px solid var(--line); background: var(--surface); }
 .leaderboard-submit label { color: var(--muted); font-size: 0.75rem; font-weight: 700; }
-.leaderboard-submit > div { display: flex; gap: 8px; }
-.leaderboard-submit input { min-width: 0; flex: 1; padding: 11px 12px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: #080908; }
+.leaderboard-submit > div { display: flex; min-width: 0; gap: 8px; }
+.leaderboard-submit input { min-width: 0; flex: 1; padding: 11px 12px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); caret-color: var(--mint); background: #080908; color-scheme: dark; font-size: 16px; line-height: 1.35; }
+.leaderboard-submit input::placeholder { color: var(--muted); opacity: 1; }
+.leaderboard-submit input:focus { outline: 2px solid var(--mint-dark); outline-offset: 2px; }
+.leaderboard-submit input:-webkit-autofill { -webkit-text-fill-color: var(--ink); box-shadow: 0 0 0 1000px #080908 inset; caret-color: var(--mint); }
 .mode-list { display: grid; gap: 10px; }
 .mode-option { display: grid; gap: 5px; padding: 17px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--surface); text-align: left; text-decoration: none; }
 .mode-option strong { font-size: 1rem; }
