@@ -26,10 +26,8 @@
 
     let LIMIT = 1e9, centerX = 0, centerZ = 0, studsPerPixel = 10;
     let dragging = false, dragButton = -1, movedDuringDrag = false, startX = 0, startY = 0, startCenterX = 0, startCenterZ = 0, isPending = false;
-    let cachedRect = null;
     function getRect() {
-        if (!cachedRect) cachedRect = mapSurface.getBoundingClientRect();
-        return cachedRect;
+        return mapSurface.getBoundingClientRect();
     }
 
     const clamp = (val, min = -LIMIT, max = LIMIT) => Math.max(min, Math.min(max, val));
@@ -227,7 +225,6 @@
     // listener would miss, and is the single place that invalidates the
     // cached rect from getRect().
     const resizeObserver = new ResizeObserver(() => {
-        cachedRect = null;
         applyTransform();
     });
     resizeObserver.observe(mapSurface);
