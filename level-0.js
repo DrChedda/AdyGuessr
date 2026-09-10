@@ -98,8 +98,14 @@ function showReview() {
 
 async function submitScore(event) {
   event.preventDefault();
+  const statusLabel = elements.leaderboardSubmit.querySelector("label");
+  const submitButton = elements.leaderboardSubmit.querySelector("button");
   const name = elements.playerName.value.trim();
-  if (!name) return;
+  if (!name) {
+    statusLabel.textContent = "Enter a name before submitting.";
+    elements.playerName.reportValidity();
+    return;
+  }
   if (!isAllowedPlayerName(name)) {
     elements.playerName.setCustomValidity("Please choose a different name.");
     elements.playerName.reportValidity();
@@ -107,24 +113,31 @@ async function submitScore(event) {
   }
   elements.playerName.setCustomValidity("");
   if (!window.adyGuessrSupabase) {
-    elements.leaderboardSubmit.querySelector("label").textContent = "Leaderboard connection unavailable.";
+    statusLabel.textContent = "Leaderboard connection unavailable.";
     return;
   }
-  const { error } = await window.adyGuessrSupabase.functions.invoke("submit-score", {
-    body: {
-      mode: "level-0",
-      playerName: name,
-      answers: state.answers.map(({ questionId, guess }) => ({ questionId, guess }))
-    }
-  });
-  elements.leaderboardSubmit.querySelector("label").textContent = error?.context?.response?.status === 403
+  statusLabel.textContent = "Submitting score...";
+  submitButton.disabled = true;
+  try {
+    const { error } = await window.adyGuessrSupabase.functions.invoke("submit-score", {
+      body: {
+        mode: "level-0",
+        playerName: name,
+        answers: state.answers.map(({ questionId, guess }) => ({ questionId, guess }))
+      }
+    });
+    statusLabel.textContent = error?.context?.response?.status === 403
     ? "Submissions are unavailable from this network."
     : error?.context?.response?.status === 409
       ? "An entry from this device has already been logged. Use your previously used name."
       : error
       ? "Could not submit score. Try again."
       : "Score submitted to the leaderboard.";
-  if (!error) elements.leaderboardSubmit.querySelector("button").disabled = true;
+    if (error) submitButton.disabled = false;
+  } catch {
+    statusLabel.textContent = "Could not submit score. Check your connection and try again.";
+    submitButton.disabled = false;
+  }
 }
 
 async function startGame() {
