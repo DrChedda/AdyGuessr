@@ -127,7 +127,7 @@
                     const pX = toX(p.z), pY = toY(p.x);
 
                     const cont = document.createElement('div');
-                    cont.className = 'map-point-container';
+                    cont.className = `map-point-container${p.name === 'Beacon' ? ' map-point-container--visual' : ''}`;
                     cont._pointData = p;
                     Object.assign(cont.style, { position: 'absolute', left: `${pX}px`, top: `${pY}px`, cursor: 'pointer', pointerEvents: 'auto' });
 
