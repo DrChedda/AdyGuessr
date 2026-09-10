@@ -84,9 +84,15 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .leaderboard-heading h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
 .leaderboard-date { color: var(--muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
 .leaderboard-list { display: grid; gap: 6px; }
-.leaderboard-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-width: 0; padding: 10px; border: 1px solid transparent; color: var(--muted); font-size: 0.8rem; }
+.leaderboard-header { display: grid; grid-template-columns: 52px minmax(0, 1fr) 64px; align-items: center; gap: 10px; padding: 0 11px 2px; color: var(--muted); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.leaderboard-header span { min-width: 0; }
+.leaderboard-header span:first-child, .leaderboard-header span:last-child { white-space: nowrap; }
+.leaderboard-header span:first-child, .leaderboard-row > span { text-align: center; }
+.leaderboard-header span:nth-child(2), .leaderboard-row strong { text-align: left; }
+.leaderboard-header span:last-child, .leaderboard-row b { text-align: right; }
+.leaderboard-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) 64px; align-items: center; gap: 10px; min-width: 0; padding: 10px; border: 1px solid transparent; color: var(--muted); font-size: 0.8rem; }
 .leaderboard-row > span { color: var(--muted); font-variant-numeric: tabular-nums; }
-.leaderboard-row strong { overflow-wrap: anywhere; color: var(--ink); font-size: 0.82rem; }
+.leaderboard-row strong { min-width: 0; overflow-wrap: anywhere; color: var(--ink); font-size: 0.82rem; }
 .leaderboard-row b { color: var(--mint); font-variant-numeric: tabular-nums; }
 .leaderboard-row--highlight { border-color: rgba(139, 196, 156, 0.35); background: #18221c; }
 .start-button { width: 100%; margin-top: 18px; padding: 13px 16px; border: 0; border-radius: 5px; color: #000; background: var(--mint); font-weight: 800; }
