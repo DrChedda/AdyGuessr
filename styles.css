@@ -27,7 +27,7 @@ button { cursor: pointer; }
 .app-shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 28px 0 24px; }
 .topbar, .scene-meta, .card-heading { display: flex; align-items: center; justify-content: space-between; }
 .topbar { gap: 22px; padding-bottom: 34px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; }
+.brand { display: inline-flex; min-width: 0; align-items: center; gap: 10px; color: var(--ink); font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; }
 .brand-logo { width: 32px; height: 32px; flex: 0 0 32px; object-fit: contain; }
 .brand-name { color: var(--ink); text-decoration: none; }
 .brand-name:hover { color: var(--mint); }
@@ -48,12 +48,12 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .review-summary strong { color: var(--ink); font-size: 1.2rem; }
 .review-divider { margin: 0 8px; color: var(--line); }
 .review-list { display: grid; gap: 8px; }
-.review-item { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--line); border-left: 3px solid var(--muted); background: var(--surface); }
+.review-item { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-width: 0; padding: 12px; border: 1px solid var(--line); border-left: 3px solid var(--muted); background: var(--surface); }
 .review-item.review-correct { border-left-color: var(--mint-dark); }
 .review-item.review-wrong { border-left-color: var(--coral); }
 .review-number { color: var(--muted); font-size: 0.75rem; }
 .review-item div { display: grid; gap: 4px; }
-.review-item strong { font-size: 0.82rem; font-weight: 700; }
+.review-item strong { overflow-wrap: anywhere; font-size: 0.82rem; font-weight: 700; }
 .review-item span:not(.review-number) { color: var(--muted); font-size: 0.75rem; }
 .review-item b { font-size: 0.8rem; }
 .review-correct b { color: var(--mint); }
@@ -81,9 +81,9 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .leaderboard-heading h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
 .leaderboard-date { color: var(--muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
 .leaderboard-list { display: grid; gap: 6px; }
-.leaderboard-row { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; padding: 10px; border: 1px solid transparent; color: var(--muted); font-size: 0.8rem; }
+.leaderboard-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-width: 0; padding: 10px; border: 1px solid transparent; color: var(--muted); font-size: 0.8rem; }
 .leaderboard-row > span { color: var(--muted); font-variant-numeric: tabular-nums; }
-.leaderboard-row strong { color: var(--ink); font-size: 0.82rem; }
+.leaderboard-row strong { overflow-wrap: anywhere; color: var(--ink); font-size: 0.82rem; }
 .leaderboard-row b { color: var(--mint); font-variant-numeric: tabular-nums; }
 .leaderboard-row--highlight { border-color: rgba(139, 196, 156, 0.35); background: #18221c; }
 .start-button { width: 100%; margin-top: 18px; padding: 13px 16px; border: 0; border-radius: 5px; color: #000; background: var(--mint); font-weight: 800; }
@@ -94,9 +94,9 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .community-note strong { color: var(--mint); }
 .community-note a { color: var(--mint); }
 .community-note a:hover { color: var(--ink); }
-.game-grid { display: grid; grid-template-areas: "scene guess"; grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.75fr); gap: 22px; }
+.game-grid { display: grid; grid-template-areas: "scene guess"; grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.75fr); gap: 22px; }
 .scene-card, .guess-card, .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
-.scene-card { grid-area: scene; overflow: hidden; }
+.scene-card { position: relative; grid-area: scene; overflow: hidden; }
 .scene-image { position: relative; min-height: 530px; overflow: hidden; cursor: zoom-in; background-color: #252d29; background-position: center; background-repeat: no-repeat; background-size: cover; }
 .level0-map { position: relative; min-height: 530px; overflow: hidden; background: #050607; }
 .map-surface, .map-world { position: absolute; inset: 0; overflow: hidden; }
@@ -119,7 +119,7 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .guess-marker { position: absolute; width: 14px; height: 14px; border: 3px solid #ffcf66; border-radius: 50%; background: #e78465; box-shadow: 0 0 0 4px rgba(255, 207, 102, 0.25); transform: translate(-50%, -50%); }
 .target-marker { position: absolute; width: 14px; height: 14px; border: 3px solid #8bc49c; border-radius: 50%; background: #b8dfc4; box-shadow: 0 0 0 4px rgba(139, 196, 156, 0.25); transform: translate(-50%, -50%); }
 .scene-meta { padding: 15px 20px; color: var(--muted); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
-.guess-card { grid-area: guess; padding: 26px; }
+.guess-card { grid-area: guess; min-width: 0; padding: 26px; }
 .back-button { display: inline-block; margin-bottom: 24px; padding: 0; border: 0; color: var(--muted); background: transparent; font-size: 0.78rem; font-weight: 700; text-decoration: none; }
 .back-button:hover { color: var(--ink); }
 .card-heading { align-items: start; margin-bottom: 20px; }
@@ -137,7 +137,7 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 .secondary-button { padding: 13px 16px; border: 0; border-radius: 5px; font-weight: 800; transition: transform 160ms ease; }
 .secondary-button:hover { transform: translateY(-2px); }
 .helper-text { margin: 14px 0 0; color: var(--muted); font-size: 0.7rem; line-height: 1.5; text-align: center; }
-.result-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 22px; padding: 24px 28px; }
+.result-card { position: absolute; right: 14px; bottom: 58px; left: 14px; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 20px; }
 .result-card p:last-child { margin: 7px 0 0; color: var(--muted); font-size: 0.9rem; }
 .secondary-button { width: auto; color: #000; background: var(--mint); }
 .image-viewer { position: fixed; z-index: 10; inset: 0; display: grid; place-items: center; padding: 28px; background: rgba(0, 0, 0, 0.92); cursor: zoom-out; }
@@ -147,7 +147,9 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
 
 @media (max-width: 780px) {
   .app-shell { width: min(100% - 28px, 620px); padding-top: 18px; }
-  .topbar { padding-bottom: 28px; }
+  .topbar { flex-wrap: wrap; gap: 14px; padding-bottom: 28px; }
+  .brand { flex: 1 1 auto; }
+  .round-status { margin-left: auto; }
   .score-panel { margin-left: auto; }
   .game-grid { grid-template-areas: "scene" "guess"; grid-template-columns: 1fr; }
   .scene-image { min-height: 390px; }
@@ -156,6 +158,15 @@ h1 { max-width: 610px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-
   .secondary-button { width: 100%; }
   .review-screen { margin-top: 28px; }
   .review-actions { align-items: stretch; flex-direction: column; gap: 12px; }
+}
+
+@media (max-width: 420px) {
+  .topbar { align-items: flex-start; }
+  .round-status, .score-panel { margin-left: 0; }
+  .round-status { flex: 1 1 auto; }
+  .score-panel { flex: 0 1 auto; }
+  .guess-card { padding: 20px; }
+  .result-card { right: 10px; left: 10px; padding: 16px; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

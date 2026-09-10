@@ -142,6 +142,12 @@ async function submitScore(event) {
   event.preventDefault();
   const name = elements.playerName.value.trim();
   if (!name) return;
+  if (!isAllowedPlayerName(name)) {
+    elements.playerName.setCustomValidity("Please choose a different name.");
+    elements.playerName.reportValidity();
+    return;
+  }
+  elements.playerName.setCustomValidity("");
   if (!window.adyGuessrSupabase) {
     elements.leaderboardSubmit.querySelector("label").textContent = "Leaderboard connection unavailable.";
     return;
@@ -153,9 +159,13 @@ async function submitScore(event) {
       answers: state.answers.map(({ questionId, selectedAnswer }) => ({ questionId, selectedAnswer }))
     }
   });
-  elements.leaderboardSubmit.querySelector("label").textContent = error
-    ? "Could not submit score. Try again."
-    : "Score submitted to the leaderboard.";
+  elements.leaderboardSubmit.querySelector("label").textContent = error?.context?.response?.status === 403
+    ? "Submissions are unavailable from this network."
+    : error?.context?.response?.status === 409
+      ? "An entry from this device has already been logged. Use your previously used name."
+      : error
+      ? "Could not submit score. Try again."
+      : "Score submitted to the leaderboard.";
   if (!error) elements.leaderboardSubmit.querySelector("button").disabled = true;
 }
 
@@ -170,6 +180,9 @@ async function startGame() {
 elements.next.addEventListener("click", () => {
   if (state.currentRound === state.roundLimit - 1) showReview();
   else { state.currentRound += 1; renderRound(); }
+});
+elements.playerName.addEventListener("input", () => {
+  elements.playerName.setCustomValidity(isAllowedPlayerName(elements.playerName.value) ? "" : "Please choose a different name.");
 });
 elements.leaderboardSubmit.addEventListener("submit", submitScore);
 elements.sceneImage.addEventListener("click", () => {
