@@ -103,5 +103,19 @@
       "image": "images/locations/question-15.png",
       "answers": ["PPR", "Old Snackrooms", "Level-124", "Level-9", "Snackrooms"],
       "correctAnswer": "Old Snackrooms"
+    },
+    {
+      "id": "location-016",
+      "question": "Where was this image taken?",
+      "image": "images/locations/question-16.png",
+      "answers": ["Level-0.5", "Level-0.35", "Level-0.7", "Level-0", "Level-558"],
+      "correctAnswer": "Level-0.7"
+    },
+    {
+      "id": "location-017",
+      "question": "Where was this image taken?",
+      "image": "images/locations/question-17.png",
+      "answers": ["Level-1.1", "Dream Mall", "Level-124", "Level-94", "Level-1"],
+      "correctAnswer": "Level-1.1"
     }
   ]
