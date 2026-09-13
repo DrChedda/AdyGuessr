@@ -1,5 +1,6 @@
 const mode = new URLSearchParams(window.location.search).get("mode") || "locations";
 const leaderboardMode = mode === "locations" ? "locations" : mode;
+const isEntityMode = mode === "entities";
 const state = { locations: [], currentRound: 0, score: 0, answered: false, roundLimit: 0, image: "", answers: [], roundStartedAt: 0 };
 const elements = {
   game: document.querySelector("#game-grid"), warning: document.querySelector("#load-warning"), roundStatus: document.querySelector("#round-status"),
@@ -9,8 +10,16 @@ const elements = {
   resultCopy: document.querySelector("#result-copy"), next: document.querySelector("#next-button"), review: document.querySelector("#review-screen"),
   reviewScore: document.querySelector("#review-score"), reviewCorrect: document.querySelector("#review-correct"), reviewList: document.querySelector("#review-list"),
   leaderboardSubmit: document.querySelector("#leaderboard-submit"), playerName: document.querySelector("#player-name"),
-  viewer: document.querySelector("#image-viewer"), viewerImage: document.querySelector("#image-viewer-image"), viewerClose: document.querySelector("#image-viewer-close")
+  viewer: document.querySelector("#image-viewer"), viewerImage: document.querySelector("#image-viewer-image"), viewerClose: document.querySelector("#image-viewer-close"),
+  modeLabel: document.querySelector("#mode-label"), helperText: document.querySelector("#helper-text"), playAgain: document.querySelector("#play-again")
 };
+
+if (isEntityMode) {
+  elements.modeLabel.textContent = "Classic Entities";
+  elements.questionTitle.textContent = "Which entity is this?";
+  elements.helperText.textContent = "Choose the entity that best matches the scene.";
+  elements.playAgain.href = "classic.html?mode=entities";
+}
 
 function showWarning(message) {
   elements.warning.textContent = message;

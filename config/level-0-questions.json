@@ -136,5 +136,53 @@
     "question": "Where is the Angel Room",
     "target": { "x": 223, "z": -2153 },
     "answer": "Angel Room"
+  },
+  {
+    "id": "level-0-024",
+    "question": "Where is the Level-37 \"Poolrooms\" Entrance",
+    "target": { "x": -2845, "z": -194 },
+    "answer": "Level-37 \"Poolrooms\" Entrance"
+  },
+  {
+    "id": "level-0-025",
+    "question": "Where is the Hub Door",
+    "target": { "x": 4873, "z": 5488 },
+    "answer": "Hub Door"
+  },
+  {
+    "id":"level-0-026",
+    "question":"Where is the Level-0.5 Entrance",
+    "target": {"x": -4900, "z": -1250},
+    "answer":"Level-0.5 Entrance"
+  },
+  {
+    "id":"level-0-027",
+    "question":"Where is the Negative Highroom",
+    "target": {"x": -3983, "z": -2153},
+    "answer":"Negative Highroom"
+  },
+    {
+    "id":"level-0-028",
+    "question":"Where is the Positive Highroom",
+    "target": {"x": 3792, "z": 2207},
+    "answer":"Positive Highroom"
+  },
+  {
+    "id":"level-0-029",
+    "question":"Where is the Level-4 Entrance",
+    "target": {"x": -1800, "z": -500},
+    "answer":"Level-4 Entrance"
+  },
+  {
+    "id":"level-0-030",
+    "question":"Where is the Infinitelands Level-4 Entrance",
+    "target": {"x": -7000, "z": -500},
+    "answer":"Infinitelands Level-4 Entrance"
+  },
+  {
+    "id":"level-0-031",
+    "question":"Where is the Parking Gate",
+    "target": {"x": -2700, "z": 4300},
+    "answer":"Parking Gate"
   }
 ]

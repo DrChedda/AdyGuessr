@@ -1,10 +1,11 @@
 const modeLabels = {
+  entities: "Entities",
   locations: "Locations",
   "level-0": "Level-0 Locations"
 };
 
-const selectedMode = new URLSearchParams(window.location.search).get("mode") || "locations";
-const leaderboardMode = modeLabels[selectedMode] ? selectedMode : "locations";
+const selectedMode = new URLSearchParams(window.location.search).get("mode");
+const leaderboardMode = modeLabels[selectedMode] ? selectedMode : null;
 const leaderboardTitle = document.querySelector("#leaderboard-title");
 const leaderboardList = document.querySelector("#leaderboard-list");
 const leaderboardModeLabel = document.querySelector("#leaderboard-mode");
@@ -12,6 +13,11 @@ const modeOptions = document.querySelectorAll(".mode-option:not(.mode-option--di
 
 async function renderLeaderboard(mode) {
   if (!leaderboardTitle || !leaderboardList) return;
+  if (!mode) {
+    leaderboardModeLabel.textContent = "Select a mode";
+    leaderboardList.innerHTML = "<div class=\"leaderboard-row\"><span>--</span><strong>Choose a mode to view scores</strong><b>--</b></div>";
+    return;
+  }
   leaderboardModeLabel.textContent = modeLabels[mode];
   leaderboardList.innerHTML = "<div class=\"leaderboard-row\"><span>--</span><strong>Loading scores...</strong><b>--</b></div>";
   if (!window.adyGuessrSupabase) {
@@ -45,7 +51,7 @@ function escapeHtml(value) {
 }
 
 modeOptions.forEach((option) => {
-  const optionMode = option.href.includes("level-0") ? "level-0" : "locations";
+  const optionMode = option.href.includes("mode=entities") ? "entities" : option.href.includes("level-0") ? "level-0" : "locations";
   option.classList.toggle("selected", optionMode === leaderboardMode);
   option.addEventListener("click", (event) => {
     const alreadySelected = option.classList.contains("selected");
